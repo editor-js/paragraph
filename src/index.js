@@ -38,6 +38,7 @@ class Paragraph {
    */
   constructor({data, config, api}) {
     this.api = api;
+    this.config = config;
 
     this._CSS = {
       block: this.api.styles.block,
@@ -60,6 +61,10 @@ class Paragraph {
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
     div.contentEditable = true;
+    
+    if (!this.api.blocks.getBlocksCount()) {
+      div.setAttribute('data-placeholder', this.config.placeholder);
+    }
 
     return div;
   }
