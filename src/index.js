@@ -116,6 +116,23 @@ class Paragraph {
   }
 
   /**
+   * On paste callback fired from Editor.
+   *
+   * @param {PasteEvent} event - event with pasted data
+   */
+  onPaste(event) {
+    if (event.type !== 'tag') {
+      return;
+    }
+
+    const data = {
+      text: event.detail.data.innerHTML
+    };
+
+    this.data = data;
+  }
+
+  /**
    * Sanitizer rules
    */
   get sanitize() {
@@ -167,19 +184,14 @@ class Paragraph {
   }
 
   /**
-   * Used by Codex Editor paste handling API.
-   * Provides configuration to handle DIV and P tags.
+   * Used by Editor paste handling API.
+   * Provides configuration to handle P tags.
    *
-   * @returns {{handler: (function(HTMLElement): {text: string}), tags: string[]}}
+   * @returns {{tags: string[]}}
    */
-  static get onPaste() {
+  static get pasteConfig() {
     return {
-      tags: [ 'P' ],
-      handler: (content) => {
-        return {
-          text: content.innerHTML
-        };
-      }
+      tags: [ 'P' ]
     };
   }
 }
