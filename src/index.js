@@ -121,10 +121,6 @@ class Paragraph {
    * @param {PasteEvent} event - event with pasted data
    */
   onPaste(event) {
-    if (event.type !== 'tag') {
-      return;
-    }
-
     const data = {
       text: event.detail.data.innerHTML
     };
