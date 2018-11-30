@@ -20,15 +20,6 @@ require('./index.css').toString();
  */
 class Paragraph {
   /**
-   * Should this tools be displayed at the Editor's Toolbox
-   * @returns {boolean}
-   * @public
-   */
-  static get displayInToolbox() {
-    return false;
-  }
-
-  /**
    * Render plugin`s main Element and fill it with saved data
    *
    * @param {{data: ParagraphData, config: object, api: object}}
