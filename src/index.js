@@ -122,7 +122,7 @@ class Paragraph {
   /**
    * Sanitizer rules
    */
-  get sanitize() {
+  static get sanitize() {
     return {
       text: {
         br: true,
