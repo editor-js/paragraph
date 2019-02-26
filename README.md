@@ -1,8 +1,8 @@
-![](https://badgen.net/badge/CodeX%20Editor/v2.0/blue)
+![](https://badgen.net/badge/Editor.js/v2.0/blue)
 
-# Paragraph Tool for CodeX Editor
+# Paragraph Tool for Editor.js
 
-Basic text Tool for the [CodeX Editor](https://ifmo.su/editor).
+Basic text Tool for the [Editor.js](https://ifmo.su/editor).
 
 ## Installation
 
@@ -11,13 +11,13 @@ Basic text Tool for the [CodeX Editor](https://ifmo.su/editor).
 Get the package
 
 ```shell
-npm i --save-dev codex.editor.paragraph
+npm i --save-dev @editorjs/paragraph
 ```
 
 Include module at your application
 
 ```javascript
-const Paragraph = require('codex.editor.paragraph');
+const Paragraph = require('@editorjs/paragraph');
 ```
 
 ### Download to your project's source dir
@@ -27,11 +27,11 @@ const Paragraph = require('codex.editor.paragraph');
 
 ### Load from CDN
 
-You can load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/codex.editor.paragraph).
+You can load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/paragraph).
 
-`https://cdn.jsdelivr.net/npm/codex.editor.paragraph@2.0.2`
+`https://cdn.jsdelivr.net/npm/@editorjs/paragraph@2.0.2`
 
-Then require this script on page with CodeX Editor.
+Then require this script on page with Editor.js.
 
 ```html
 <script src="..."></script>
@@ -39,10 +39,10 @@ Then require this script on page with CodeX Editor.
 
 ## Usage
 
-Add a new Tool to the `tools` property of the CodeX Editor initial config.
+Add a new Tool to the `tools` property of the Editor.js initial config.
 
 ```javascript
-var editor = CodexEditor({
+var editor = EditorJS({
   ...
   
   tools: {

@@ -4,7 +4,7 @@
 require('./index.css').toString();
 
 /**
- * Base Paragraph Block for the CodeX Editor.
+ * Base Paragraph Block for the Editor.js.
  * Represents simple paragraph
  *
  * @author CodeX (team@ifmo.su)
@@ -25,7 +25,7 @@ class Paragraph {
    * @param {{data: ParagraphData, config: object, api: object}}
    *   data — previously saved data
    *   config - user config for Tool
-   *   api - CodeX Editor API
+   *   api - Editor.js API
    */
   constructor({data, config, api}) {
     this.api = api;
@@ -66,7 +66,7 @@ class Paragraph {
 
   /**
    * Method that specified how to merge two Text blocks.
-   * Called by CodeX Editor by backspace at the beginning of the Block
+   * Called by Editor.js by backspace at the beginning of the Block
    * @param {ParagraphData} data
    * @public
    */
