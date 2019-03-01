@@ -10,7 +10,7 @@
   ],
   "description": "Paragraph Tool for Editor.js",
   "license": "MIT",
-  "repository": "https://github.com/editorjs/paragraph",
+  "repository": "https://github.com/editor-js/paragraph",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --config ./webpack.config.js --mode production --watch"
