@@ -19,6 +19,17 @@ require('./index.css').toString();
  * @property {String} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
 class Paragraph {
+
+  /**
+   * Default placeholder for Paragraph Tool
+   *
+   * @return {string}
+   * @constructor
+   */
+  static get DEFAULT_PLACEHOLDER() {
+    return 'Tell your story...';
+  }
+
   /**
    * Render plugin`s main Element and fill it with saved data
    *
@@ -35,6 +46,11 @@ class Paragraph {
       wrapper: 'ce-paragraph'
     };
 
+    /**
+     * Placeholder for paragraph if it is first Block
+     * @type {string}
+     */
+    this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
     this._data = {};
     this._element = this.drawView();
 
@@ -51,6 +67,7 @@ class Paragraph {
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
     div.contentEditable = true;
+    div.dataset.placeholder = this._placeholder;
 
     return div;
   }
