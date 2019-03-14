@@ -4,7 +4,7 @@
 }
 
 .ce-block:not(:first-child) .ce-paragraph:empty:before {
-  content: '';
+  opacity: 0;
 }
 
 .ce-paragraph p:first-of-type{
