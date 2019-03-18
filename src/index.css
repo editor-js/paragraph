@@ -3,7 +3,8 @@
     outline: none;
 }
 
-.ce-block:not(:first-child) .ce-paragraph:empty:before {
+.ce-block:not(:first-child) .ce-paragraph:empty:before,
+.codex-editor:not(.codex-editor--empty) .ce-paragraph:empty:before {
   opacity: 0;
 }
 
