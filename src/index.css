@@ -9,7 +9,7 @@
   font-weight: normal;
 }
 
-.ce-placeholder[data-placeholder]:empty:focus::before {
+.ce-paragraph[data-placeholder]:empty:focus::before {
   opacity: 0.3;
 }
 
