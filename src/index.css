@@ -3,6 +3,16 @@
     outline: none;
 }
 
+.ce-paragraph[data-placeholder]:empty::before{
+  content: attr(data-placeholder);
+  color: #707684;
+  font-weight: normal;
+}
+
+.ce-placeholder[data-placeholder]:empty:focus::before {
+  opacity: 0.3;
+}
+
 /** Hide placeholder if Block is not first or if Editor is not empty */
 .ce-block:not(:first-child) .ce-paragraph:empty::before,
 .codex-editor:not(.codex-editor--empty) .ce-paragraph:empty::before {
