@@ -7,16 +7,16 @@
   content: attr(data-placeholder);
   color: #707684;
   font-weight: normal;
+  opacity: 0;
 }
 
-.ce-paragraph[data-placeholder]:empty:focus::before {
+.codex-editor.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus::before {
   opacity: 0.3;
 }
 
 /** Hide placeholder if Block is not first or if Editor is not empty */
-.ce-block:not(:first-child) .ce-paragraph:empty::before,
-.codex-editor:not(.codex-editor--empty) .ce-paragraph:empty::before {
-  opacity: 0;
+.codex-editor.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before {
+  opacity: 1;
 }
 
 .ce-paragraph p:first-of-type{
