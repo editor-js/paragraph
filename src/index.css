@@ -16,7 +16,7 @@
 }
 
 .codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus::before {
-  opacity: 0.3;
+  opacity: 0;
 }
 
 .ce-paragraph p:first-of-type{
