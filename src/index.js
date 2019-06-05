@@ -58,6 +58,12 @@ class Paragraph {
     this.data = data;
   }
 
+  /**
+   * Check if text content is empty and set empty string to inner html.
+   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements 
+   * 
+   * @param {KeyboardEvent} e - key up event 
+   */
   onKeyUp(e) {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
       return;

@@ -10,13 +10,13 @@
   opacity: 0;
 }
 
-.codex-editor.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus::before {
-  opacity: 0.3;
+/** Show placeholder at the first paragraph if Editor is empty */
+.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before {
+  opacity: 1;
 }
 
-/** Hide placeholder if Block is not first or if Editor is not empty */
-.codex-editor.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before {
-  opacity: 1;
+.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus::before {
+  opacity: 0.3;
 }
 
 .ce-paragraph p:first-of-type{
