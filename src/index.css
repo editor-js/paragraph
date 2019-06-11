@@ -15,6 +15,7 @@
   opacity: 1;
 }
 
+.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before,
 .codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus::before {
   opacity: 0;
 }
