@@ -27,7 +27,7 @@ class Paragraph {
    * @constructor
    */
   static get DEFAULT_PLACEHOLDER() {
-    return 'Tell your story...';
+    return '';
   }
 
   /**
@@ -60,9 +60,9 @@ class Paragraph {
 
   /**
    * Check if text content is empty and set empty string to inner html.
-   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements 
-   * 
-   * @param {KeyboardEvent} e - key up event 
+   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements
+   *
+   * @param {KeyboardEvent} e - key up event
    */
   onKeyUp(e) {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
