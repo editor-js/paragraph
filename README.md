@@ -40,7 +40,7 @@ Then require this script on page with Editor.js.
 ## Usage
 
 The Paragraph tool is included at editor.js by default, so you don't need to connect it manually.
-If you want to connect your customized version of this tool, do not forget to use the [`initialBlock`](https://editorjs.io/configuration#change-the-default-block)
+If you want to connect your customized version of this tool, do not forget to use the [`defaultBlock`](https://editorjs.io/configuration#change-the-default-block)
 option of the editor config.
 
 Add a new Tool to the `tools` property of the Editor.js initial config.
