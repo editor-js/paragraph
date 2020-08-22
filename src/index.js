@@ -192,6 +192,15 @@ class Paragraph {
   }
 
   /**
+   * Returns true to notify the core that read-only mode is supported
+   *
+   * @return {boolean}
+   */
+  static get isReadOnlySupported() {
+    return true;
+  }
+
+  /**
    * Get current Tools`s data
    * @returns {ParagraphData} Current data
    * @private
