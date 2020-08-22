@@ -95,7 +95,7 @@ class Paragraph {
     let div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = true;
+    div.contentEditable = false;
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
     if (!this.readOnly) {
