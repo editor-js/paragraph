@@ -3,6 +3,16 @@
     outline: none;
 }
 
+.ce-paragraph--right {
+  text-align: right;
+}
+.ce-paragraph--center {
+  text-align: center;
+}
+.ce-paragraph--left {
+  text-align: left;
+}
+
 .ce-paragraph[data-placeholder]:empty::before{
   content: attr(data-placeholder);
   color: #707684;
