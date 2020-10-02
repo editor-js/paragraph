@@ -27,7 +27,7 @@ const Paragraph = require('@editorjs/paragraph');
 
 ### Load from CDN
 
-You can load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/paragraph).
+You can also load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/paragraph).
 
 `https://cdn.jsdelivr.net/npm/@editorjs/paragraph@2.0.2`
 
@@ -39,7 +39,7 @@ Then require this script on page with Editor.js.
 
 ## Usage
 
-The Paragraph tool is included at editor.js by default, so you don't need to connect it manually.
+The Paragraph tool is included at editor.js by default. So you don't need to connect it manually.
 If you want to connect your customized version of this tool, do not forget to use the [`defaultBlock`](https://editorjs.io/configuration#change-the-default-block)
 option of the editor config.
 
