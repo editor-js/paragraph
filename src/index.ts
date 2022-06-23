@@ -1,3 +1,5 @@
+import { API, BlockToolData, HTMLPasteEvent, PasteEvent, PatternPasteEvent } from '@editorjs/editorjs';
+import { ToolBox } from './type';
 /**
  * Build styles
  */
@@ -23,7 +25,15 @@ require('./index.css').toString();
  * @description Tool's input and output data format
  * @property {String} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
-class Paragraph {
+export default class Paragraph {
+  _placeholder: string;
+  _data: BlockToolData;
+  _element: HTMLElement;
+  _preserveBlank: boolean;
+  _CSS: { block: string; wrapper: string };
+  readOnly: boolean;
+  api: API;
+
   /**
    * Default placeholder for Paragraph Tool
    *
@@ -43,13 +53,13 @@ class Paragraph {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({data, config, api, readOnly}) {
+  constructor({ data, config, api, readOnly }: { data: any; config: any; api: any; readOnly: any }) {
     this.api = api;
     this.readOnly = readOnly;
 
     this._CSS = {
       block: this.api.styles.block,
-      wrapper: 'ce-paragraph'
+      wrapper: 'ce-paragraph',
     };
 
     if (!this.readOnly) {
@@ -70,16 +80,16 @@ class Paragraph {
 
   /**
    * Check if text content is empty and set empty string to inner html.
-   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements
+   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditable elements
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e) {
+  onKeyUp(e: KeyboardEvent) {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
       return;
     }
 
-    const {textContent} = this._element;
+    const { textContent } = this._element;
 
     if (textContent === '') {
       this._element.innerHTML = '';
@@ -91,15 +101,15 @@ class Paragraph {
    * @return {HTMLElement}
    * @private
    */
-  drawView() {
+  private drawView() {
     let div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = false;
+    div.contentEditable = 'false';
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
     if (!this.readOnly) {
-      div.contentEditable = true;
+      div.contentEditable = 'true';
       div.addEventListener('keyup', this.onKeyUp);
     }
 
@@ -111,7 +121,7 @@ class Paragraph {
    *
    * @returns {HTMLDivElement}
    */
-  render() {
+  public render() {
     return this._element;
   }
 
@@ -121,9 +131,9 @@ class Paragraph {
    * @param {ParagraphData} data
    * @public
    */
-  merge(data) {
+  public merge(data) {
     let newData = {
-      text : this.data.text + data.text
+      text: this.data.text + data.text,
     };
 
     this.data = newData;
@@ -137,7 +147,7 @@ class Paragraph {
    * @returns {boolean} false if saved data is not correct, otherwise true
    * @public
    */
-  validate(savedData) {
+  public validate(savedData: BlockToolData) {
     if (savedData.text.trim() === '' && !this._preserveBlank) {
       return false;
     }
@@ -151,9 +161,9 @@ class Paragraph {
    * @returns {ParagraphData} - saved data
    * @public
    */
-  save(toolsContent) {
+  public save(toolsContent) {
     return {
-      text: toolsContent.innerHTML
+      text: toolsContent.innerHTML,
     };
   }
 
@@ -162,9 +172,9 @@ class Paragraph {
    *
    * @param {PasteEvent} event - event with pasted data
    */
-  onPaste(event) {
+  public onPaste(event: HTMLPasteEvent) {
     const data = {
-      text: event.detail.data.innerHTML
+      text: event.detail.data.innerHTML,
     };
 
     this.data = data;
@@ -173,21 +183,21 @@ class Paragraph {
   /**
    * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
    */
-  static get conversionConfig() {
+  public static get conversionConfig() {
     return {
       export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
-      import: 'text' // to covert other block's exported string to Paragraph, fill 'text' property of tool data
+      import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
     };
   }
 
   /**
    * Sanitizer rules
    */
-  static get sanitize() {
+  public static get sanitize() {
     return {
       text: {
         br: true,
-      }
+      },
     };
   }
 
@@ -196,7 +206,7 @@ class Paragraph {
    *
    * @return {boolean}
    */
-  static get isReadOnlySupported() {
+  public static get isReadOnlySupported() {
     return true;
   }
 
@@ -235,7 +245,7 @@ class Paragraph {
    */
   static get pasteConfig() {
     return {
-      tags: [ 'P' ]
+      tags: ['P'],
     };
   }
 
@@ -244,12 +254,10 @@ class Paragraph {
    *
    * @return {{icon: string, title: string}}
    */
-  static get toolbox() {
+  static get toolbox(): ToolBox {
     return {
       icon: require('./toolbox-icon.svg').default,
-      title: 'Text'
+      title: 'Text',
     };
   }
 }
-
-module.exports = Paragraph;
