@@ -29,5 +29,8 @@
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "@codexteam/icons": "^0.0.4"
   }
 }
