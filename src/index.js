@@ -1,7 +1,9 @@
 /**
  * Build styles
  */
-require('./index.css').toString();
+import './index.css';
+
+import { IconText } from '@codexteam/icons'
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -23,7 +25,7 @@ require('./index.css').toString();
  * @description Tool's input and output data format
  * @property {String} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
-class Paragraph {
+export default class Paragraph {
   /**
    * Default placeholder for Paragraph Tool
    *
@@ -246,10 +248,8 @@ class Paragraph {
    */
   static get toolbox() {
     return {
-      icon: require('./toolbox-icon.svg').default,
+      icon: IconText,
       title: 'Text'
     };
   }
 }
-
-module.exports = Paragraph;
