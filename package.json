@@ -13,6 +13,7 @@
   "repository": "https://github.com/editor-js/paragraph",
   "main": "dist/paragraph.umd.js",
   "module": "dist/paragraph.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
@@ -24,7 +25,10 @@
   "devDependencies": {
     "@codexteam/icons": "^0.2.0",
     "@editorjs/editorjs": "^2.26.4",
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4",
     "vite": "^4.0.4",
-    "vite-plugin-css-injected-by-js": "^2.3.1"
+    "vite-plugin-css-injected-by-js": "^2.3.1",
+    "vite-plugin-dts": "^1.7.1"
   }
 }
