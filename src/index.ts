@@ -5,14 +5,14 @@ import './index.css';
 
 import { IconText } from '@codexteam/icons'
 import { API, BlockTool, PasteEvent } from '@editorjs/editorjs';
-import type { ParagraphToolConfig, ParagraphToolCSS, ParagraphToolData } from './types';
+import type { ParagraphToolConfig, ParagraphToolCSS, ParagraphToolData, PasteConfig, Toolbox } from './types';
 
 /**
  * Base Paragraph Block for the Editor.js.
  * Represents simple paragraph
  *
- * @author CodeX (team@codex.so)
- * @copyright CodeX 2018
+ * @author CodeX <team@codex.so>
+ * @copyright CodeX 2023
  * @license The MIT License (MIT)
  */
 export default class Paragraph implements BlockTool {
@@ -55,10 +55,9 @@ export default class Paragraph implements BlockTool {
   /**
    * Default placeholder for Paragraph Tool
    *
-   * @return {string}
    * @constructor
    */
-  static get DEFAULT_PLACEHOLDER() {
+  static get DEFAULT_PLACEHOLDER(): string {
     return '';
   }
 
@@ -84,17 +83,15 @@ export default class Paragraph implements BlockTool {
       this.onKeyUp = this.onKeyUp.bind(this);
     }
 
-    this.placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
+    this.placeholder = config.placeholder ?? Paragraph.DEFAULT_PLACEHOLDER;
     this.element = this.drawView();
-    this.preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
+    this.preserveBlank = config.preserveBlank ?? false;
     this.data = data;
   }
 
   /**
    * Check if text content is empty and set empty string to inner html.
    * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements
-   *
-   * @param e - key up event
    */
   private onKeyUp(e: KeyboardEvent): void {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
@@ -109,9 +106,7 @@ export default class Paragraph implements BlockTool {
   }
 
   /**
-   * Create Tool's view
-   *
-   * @return {HTMLElement}
+   * Create Tool's html view
    */
   private drawView(): HTMLDivElement {
     let div = document.createElement('div');
@@ -141,7 +136,7 @@ export default class Paragraph implements BlockTool {
    * Method that specified how to merge two Text blocks.
    * Called by Editor.js by backspace at the beginning of the Block
    *
-   * @param data
+   * @param data - paragraph content
    */
   public merge(data: ParagraphToolData) {
     this.data = {
@@ -180,8 +175,6 @@ export default class Paragraph implements BlockTool {
 
   /**
    * On paste callback fired from Editor.
-   *
-   * @param {PasteEvent} event - event with pasted data
    */
   onPaste(event: PasteEvent) {
     if (!('data' in event.detail)) {
@@ -189,7 +182,7 @@ export default class Paragraph implements BlockTool {
     }
 
     this.data = {
-        text: (event.detail.data as HTMLElement).innerHTML,
+      text: (event.detail.data as HTMLElement).innerHTML,
     };
   }
 
@@ -216,17 +209,13 @@ export default class Paragraph implements BlockTool {
 
   /**
    * Returns true to notify the core that read-only mode is supported
-   *
-   * @return {boolean}
    */
-  static get isReadOnlySupported() {
+  static get isReadOnlySupported(): boolean {
     return true;
   }
 
   /**
    * Get current Tools`s data
-   *
-   * @returns Current data
    */
   private get data(): ParagraphToolData {
     this._data.text = this.element.innerHTML;
@@ -235,11 +224,7 @@ export default class Paragraph implements BlockTool {
   }
 
   /**
-   * Store data in plugin:
-   * - at the this._data property
-   * - at the HTML
-   *
-   * @param data — data to set
+   * Updates the internal state and state of the html element
    */
   private set data(data: ParagraphToolData) {
     this._data = data || {};
@@ -250,21 +235,17 @@ export default class Paragraph implements BlockTool {
   /**
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
-   *
-   * @returns {{tags: string[]}}
    */
-  static get pasteConfig() {
+  static get pasteConfig(): PasteConfig {
     return {
-      tags: [ 'P' ]
+      tags: ['P']
     };
   }
 
   /**
-   * Icon and title for displaying at the Toolbox
-   *
-   * @return {{icon: string, title: string}}
+   * Icon and title for displaying paragraph module at the Toolbox
    */
-  static get toolbox() {
+  static get toolbox(): Toolbox {
     return {
       icon: IconText,
       title: 'Text'
