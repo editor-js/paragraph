@@ -11,26 +11,24 @@
   "description": "Paragraph Tool for Editor.js",
   "license": "MIT",
   "repository": "https://github.com/editor-js/paragraph",
-  "main": "./dist/bundle.js",
+  "main": "dist/paragraph.umd.js",
+  "module": "dist/paragraph.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development --watch"
+    "dev": "vite",
+    "build": "vite build"
   },
   "author": {
     "name": "CodeX",
     "email": "team@codex.so"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.5.3",
-    "raw-loader": "^4.0.1",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
-    "@codexteam/icons": "^0.0.4"
+    "@codexteam/icons": "^0.2.0",
+    "@editorjs/editorjs": "^2.26.4",
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4",
+    "vite-plugin-css-injected-by-js": "^2.3.1",
+    "vite-plugin-dts": "^1.7.1"
   }
 }

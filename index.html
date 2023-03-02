@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Editor.js example page</title>
+
+    <style>
+        body {
+            font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+    </style>
+</head>
+<body>
+<div id="editorjs"></div>
+
+<button id="save-button">Save</button>
+<pre id="output"></pre>
+
+<script type="module">
+    import EditorJS from '@editorjs/editorjs';
+    import paragraph from './src/index.ts';
+
+    const editor = new EditorJS({
+        tools: {
+            paragraph: {
+                class: paragraph,
+                // inlineToolbar: ['marker', 'link'],
+                // shortcut: 'CMD+SHIFT+H',
+                // config: {},
+            }
+        },
+
+        data: {
+            blocks: [
+                {
+                    type: 'paragraph',
+                    data: {},
+                }
+            ],
+        },
+    });
+
+    const saveButton = document.getElementById('save-button');
+    const output = document.getElementById('output');
+
+    saveButton.addEventListener('click', () => {
+        editor.save().then( savedData => {
+            output.innerHTML = JSON.stringify(savedData, null, 4);
+        })
+    })
+</script>
+</body>
+</html>

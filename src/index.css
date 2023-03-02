@@ -1,9 +1,9 @@
 .ce-paragraph {
-    line-height: 1.6em;
-    outline: none;
+  line-height: 1.6em;
+  outline: none;
 }
 
-.ce-paragraph[data-placeholder]:empty::before{
+.ce-paragraph[data-placeholder]:empty::before {
   content: attr(data-placeholder);
   color: #707684;
   font-weight: normal;
@@ -20,10 +20,10 @@
   opacity: 0;
 }
 
-.ce-paragraph p:first-of-type{
-    margin-top: 0;
+.ce-paragraph p:first-of-type {
+  margin-top: 0;
 }
 
-.ce-paragraph p:last-of-type{
-    margin-bottom: 0;
+.ce-paragraph p:last-of-type {
+  margin-bottom: 0;
 }
