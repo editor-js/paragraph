@@ -10,6 +10,9 @@ export interface ParagraphToolData extends BlockToolData {
   text?: string;
 }
 
+/**
+ * Public features for configuring the tool
+ */
 export interface ParagraphToolConfig extends ToolConfig {
   /**
    * Placeholder for the empty paragraph
@@ -22,6 +25,9 @@ export interface ParagraphToolConfig extends ToolConfig {
   preserveBlank?: boolean;
 }
 
+/**
+ * CSS class names for elements created by the plugin
+ */
 export interface ParagraphToolCSS {
   /**
    * Block CSS class name
@@ -34,10 +40,16 @@ export interface ParagraphToolCSS {
   wrapper: string;
 }
 
+/**
+ * Used by Editor paste handling API
+ */
 export interface PasteConfig {
   tags: string[];
 }
 
+/**
+ * Used by Editor API to display the module in the toolbox
+ */
 export interface Toolbox {
   icon: string;
   title: string;

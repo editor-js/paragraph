@@ -43,6 +43,9 @@ export default class Paragraph implements BlockTool {
    */
   private readonly element: HTMLDivElement;
 
+  /**
+   * CSS class names
+   */
   private readonly CSS: ParagraphToolCSS;
 
   /**
@@ -50,6 +53,9 @@ export default class Paragraph implements BlockTool {
    */
   private readonly placeholder: string;
 
+  /**
+   * Will save empty paragraphs if set to true
+   */
   private readonly preserveBlank: boolean;
 
   /**
