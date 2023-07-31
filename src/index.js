@@ -7,7 +7,7 @@ import { IconText } from '@codexteam/icons'
 
 /**
  * Base Paragraph Block for the Editor.js.
- * Represents simple paragraph
+ * Represents a regular text block
  *
  * @author CodeX (team@codex.so)
  * @copyright CodeX 2018
@@ -21,16 +21,16 @@ import { IconText } from '@codexteam/icons'
  */
 
 /**
- * @typedef {Object} ParagraphData
+ * @typedef {object} ParagraphData
  * @description Tool's input and output data format
- * @property {String} text — Paragraph's content. Can include HTML tags: <a><b><i>
+ * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
 export default class Paragraph {
   /**
    * Default placeholder for Paragraph Tool
    *
-   * @return {string}
-   * @constructor
+   * @returns {string}
+   * @class
    */
   static get DEFAULT_PLACEHOLDER() {
     return '';
@@ -45,13 +45,13 @@ export default class Paragraph {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({data, config, api, readOnly}) {
+  constructor({ data, config, api, readOnly }) {
     this.api = api;
     this.readOnly = readOnly;
 
     this._CSS = {
       block: this.api.styles.block,
-      wrapper: 'ce-paragraph'
+      wrapper: 'ce-paragraph',
     };
 
     if (!this.readOnly) {
@@ -60,11 +60,12 @@ export default class Paragraph {
 
     /**
      * Placeholder for paragraph if it is first Block
+     *
      * @type {string}
      */
     this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
     this._data = {};
-    this._element = this.drawView();
+    this._element = null;
     this._preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
 
     this.data = data;
@@ -81,7 +82,7 @@ export default class Paragraph {
       return;
     }
 
-    const {textContent} = this._element;
+    const { textContent } = this._element;
 
     if (textContent === '') {
       this._element.innerHTML = '';
@@ -90,11 +91,12 @@ export default class Paragraph {
 
   /**
    * Create Tool's view
-   * @return {HTMLElement}
+   *
+   * @returns {HTMLElement}
    * @private
    */
   drawView() {
-    let div = document.createElement('DIV');
+    const div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
     div.contentEditable = false;
@@ -114,18 +116,25 @@ export default class Paragraph {
    * @returns {HTMLDivElement}
    */
   render() {
+    if (this._element === null) {
+      this._element = this.drawView();
+    }
+
+    this.hydrate();
+
     return this._element;
   }
 
   /**
    * Method that specified how to merge two Text blocks.
    * Called by Editor.js by backspace at the beginning of the Block
+   *
    * @param {ParagraphData} data
    * @public
    */
   merge(data) {
-    let newData = {
-      text : this.data.text + data.text
+    const newData = {
+      text : this.data.text + data.text,
     };
 
     this.data = newData;
@@ -149,13 +158,14 @@ export default class Paragraph {
 
   /**
    * Extract Tool's data from the view
+   *
    * @param {HTMLDivElement} toolsContent - Paragraph tools rendered view
    * @returns {ParagraphData} - saved data
    * @public
    */
   save(toolsContent) {
     return {
-      text: toolsContent.innerHTML
+      text: toolsContent.innerHTML,
     };
   }
 
@@ -166,7 +176,7 @@ export default class Paragraph {
    */
   onPaste(event) {
     const data = {
-      text: event.detail.data.innerHTML
+      text: event.detail.data.innerHTML,
     };
 
     this.data = data;
@@ -178,7 +188,7 @@ export default class Paragraph {
   static get conversionConfig() {
     return {
       export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
-      import: 'text' // to covert other block's exported string to Paragraph, fill 'text' property of tool data
+      import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
     };
   }
 
@@ -189,14 +199,14 @@ export default class Paragraph {
     return {
       text: {
         br: true,
-      }
+      },
     };
   }
 
   /**
    * Returns true to notify the core that read-only mode is supported
    *
-   * @return {boolean}
+   * @returns {boolean}
    */
   static get isReadOnlySupported() {
     return true;
@@ -204,13 +214,16 @@ export default class Paragraph {
 
   /**
    * Get current Tools`s data
+   *
    * @returns {ParagraphData} Current data
    * @private
    */
   get data() {
-    let text = this._element.innerHTML;
+    if (this._element !== null) {
+      const text = this._element.innerHTML;
 
-    this._data.text = text;
+      this._data.text = text;
+    }
 
     return this._data;
   }
@@ -226,7 +239,18 @@ export default class Paragraph {
   set data(data) {
     this._data = data || {};
 
-    this._element.innerHTML = this._data.text || '';
+    if (this._element !== null) {
+      this.hydrate();
+    }
+  }
+
+  /**
+   * Fill tool's view with data
+   */
+  hydrate(){
+    window.requestAnimationFrame(() => {
+      this._element.innerHTML = this._data.text || '';
+    });
   }
 
   /**
@@ -237,19 +261,19 @@ export default class Paragraph {
    */
   static get pasteConfig() {
     return {
-      tags: [ 'P' ]
+      tags: [ 'P' ],
     };
   }
 
   /**
    * Icon and title for displaying at the Toolbox
    *
-   * @return {{icon: string, title: string}}
+   * @returns {{icon: string, title: string}}
    */
   static get toolbox() {
     return {
       icon: IconText,
-      title: 'Text'
+      title: 'Text',
     };
   }
 }
