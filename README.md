@@ -15,7 +15,7 @@ yarn add @editorjs/paragraph
 Include module at your application
 
 ```javascript
-import Paragraph fromm '@editorjs/paragraph';
+import Paragraph from '@editorjs/paragraph';
 ```
 
 ## Usage
