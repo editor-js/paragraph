@@ -6,35 +6,16 @@ Basic text Tool for the [Editor.js](https://ifmo.su/editor).
 
 ## Installation
 
-### Install via NPM
-
 Get the package
 
 ```shell
-npm i --save @editorjs/paragraph
+yarn add @editorjs/paragraph
 ```
 
 Include module at your application
 
 ```javascript
-const Paragraph = require('@editorjs/paragraph');
-```
-
-### Download to your project's source dir
-
-1. Upload folder `dist` from repository
-2. Add `dist/bundle.js` file to your page.
-
-### Load from CDN
-
-You can also load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/paragraph).
-
-`https://cdn.jsdelivr.net/npm/@editorjs/paragraph@2.0.2`
-
-Then require this script on page with Editor.js.
-
-```html
-<script src="..."></script>
+import Paragraph fromm '@editorjs/paragraph';
 ```
 
 ## Usage

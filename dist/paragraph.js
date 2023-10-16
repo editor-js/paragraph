@@ -1,10 +1,5 @@
-/**
- * Build styles
- */
-import './index.css';
-
-import { IconText } from '@codexteam/icons'
-
+(function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")),document.head.appendChild(e)}}catch(t){console.error("vite-plugin-css-injected-by-js",t)}})();
+const s = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
 /**
  * Base Paragraph Block for the Editor.js.
  * Represents a regular text block
@@ -13,19 +8,7 @@ import { IconText } from '@codexteam/icons'
  * @copyright CodeX 2018
  * @license The MIT License (MIT)
  */
-
-/**
- * @typedef {object} ParagraphConfig
- * @property {string} placeholder - placeholder for the empty paragraph
- * @property {boolean} preserveBlank - Whether or not to keep blank paragraphs when saving editor data
- */
-
-/**
- * @typedef {object} ParagraphData
- * @description Tool's input and output data format
- * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
- */
-export default class Paragraph {
+class a {
   /**
    * Default placeholder for Paragraph Tool
    *
@@ -33,9 +16,8 @@ export default class Paragraph {
    * @class
    */
   static get DEFAULT_PLACEHOLDER() {
-    return '';
+    return "";
   }
-
   /**
    * Render plugin`s main Element and fill it with saved data
    *
@@ -45,50 +27,24 @@ export default class Paragraph {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({ data, config, api, readOnly }) {
-    this.api = api;
-    this.readOnly = readOnly;
-
-    this._CSS = {
+  constructor({ data: t, config: e, api: i, readOnly: n }) {
+    this.api = i, this.readOnly = n, this._CSS = {
       block: this.api.styles.block,
-      wrapper: 'ce-paragraph',
-    };
-
-    if (!this.readOnly) {
-      this.onKeyUp = this.onKeyUp.bind(this);
-    }
-
-    /**
-     * Placeholder for paragraph if it is first Block
-     *
-     * @type {string}
-     */
-    this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
-    this._data = {};
-    this._element = null;
-    this._preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
-
-    this.data = data;
+      wrapper: "ce-paragraph"
+    }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = e.placeholder ? e.placeholder : a.DEFAULT_PLACEHOLDER, this._data = {}, this._element = null, this._preserveBlank = e.preserveBlank !== void 0 ? e.preserveBlank : !1, this.data = t;
   }
-
   /**
    * Check if text content is empty and set empty string to inner html.
    * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e) {
-    if (e.code !== 'Backspace' && e.code !== 'Delete') {
+  onKeyUp(t) {
+    if (t.code !== "Backspace" && t.code !== "Delete")
       return;
-    }
-
-    const { textContent } = this._element;
-
-    if (textContent === '') {
-      this._element.innerHTML = '';
-    }
+    const { textContent: e } = this._element;
+    e === "" && (this._element.innerHTML = "");
   }
-
   /**
    * Create Tool's view
    *
@@ -96,35 +52,17 @@ export default class Paragraph {
    * @private
    */
   drawView() {
-    const div = document.createElement('DIV');
-
-    div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = false;
-    div.dataset.placeholder = this.api.i18n.t(this._placeholder);
-
-    if (this._data.text) {
-      div.innerHTML = this._data.text;
-    }
-
-    if (!this.readOnly) {
-      div.contentEditable = true;
-      div.addEventListener('keyup', this.onKeyUp);
-    }
-
-    return div;
+    const t = document.createElement("DIV");
+    return t.classList.add(this._CSS.wrapper, this._CSS.block), t.contentEditable = !1, t.dataset.placeholder = this.api.i18n.t(this._placeholder), this._data.text && (t.innerHTML = this._data.text), this.readOnly || (t.contentEditable = !0, t.addEventListener("keyup", this.onKeyUp)), t;
   }
-
   /**
    * Return Tool's view
    *
    * @returns {HTMLDivElement}
    */
   render() {
-    this._element = this.drawView();
-
-    return this._element;
+    return this._element = this.drawView(), this._element;
   }
-
   /**
    * Method that specified how to merge two Text blocks.
    * Called by Editor.js by backspace at the beginning of the Block
@@ -132,14 +70,12 @@ export default class Paragraph {
    * @param {ParagraphData} data
    * @public
    */
-  merge(data) {
-    const newData = {
-      text : this.data.text + data.text,
+  merge(t) {
+    const e = {
+      text: this.data.text + t.text
     };
-
-    this.data = newData;
+    this.data = e;
   }
-
   /**
    * Validate Paragraph block data:
    * - check for emptiness
@@ -148,14 +84,9 @@ export default class Paragraph {
    * @returns {boolean} false if saved data is not correct, otherwise true
    * @public
    */
-  validate(savedData) {
-    if (savedData.text.trim() === '' && !this._preserveBlank) {
-      return false;
-    }
-
-    return true;
+  validate(t) {
+    return !(t.text.trim() === "" && !this._preserveBlank);
   }
-
   /**
    * Extract Tool's data from the view
    *
@@ -163,55 +94,51 @@ export default class Paragraph {
    * @returns {ParagraphData} - saved data
    * @public
    */
-  save(toolsContent) {
+  save(t) {
     return {
-      text: toolsContent.innerHTML,
+      text: t.innerHTML
     };
   }
-
   /**
    * On paste callback fired from Editor.
    *
    * @param {PasteEvent} event - event with pasted data
    */
-  onPaste(event) {
-    const data = {
-      text: event.detail.data.innerHTML,
+  onPaste(t) {
+    const e = {
+      text: t.detail.data.innerHTML
     };
-
-    this.data = data;
+    this.data = e;
   }
-
   /**
    * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
    */
   static get conversionConfig() {
     return {
-      export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
-      import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
+      export: "text",
+      // to convert Paragraph to other block, use 'text' property of saved data
+      import: "text"
+      // to covert other block's exported string to Paragraph, fill 'text' property of tool data
     };
   }
-
   /**
    * Sanitizer rules
    */
   static get sanitize() {
     return {
       text: {
-        br: true,
-      },
+        br: !0
+      }
     };
   }
-
   /**
    * Returns true to notify the core that read-only mode is supported
    *
    * @returns {boolean}
    */
   static get isReadOnlySupported() {
-    return true;
+    return !0;
   }
-
   /**
    * Get current Tools`s data
    *
@@ -220,14 +147,11 @@ export default class Paragraph {
    */
   get data() {
     if (this._element !== null) {
-      const text = this._element.innerHTML;
-
-      this._data.text = text;
+      const t = this._element.innerHTML;
+      this._data.text = t;
     }
-
     return this._data;
   }
-
   /**
    * Store data in plugin:
    * - at the this._data property
@@ -236,23 +160,17 @@ export default class Paragraph {
    * @param {ParagraphData} data — data to set
    * @private
    */
-  set data(data) {
-    this._data = data || {};
-
-    if (this._element !== null) {
-      this.hydrate();
-    }
+  set data(t) {
+    this._data = t || {}, this._element !== null && this.hydrate();
   }
-
   /**
    * Fill tool's view with data
    */
-  hydrate(){
+  hydrate() {
     window.requestAnimationFrame(() => {
-      this._element.innerHTML = this._data.text || '';
+      this._element.innerHTML = this._data.text || "";
     });
   }
-
   /**
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
@@ -261,10 +179,9 @@ export default class Paragraph {
    */
   static get pasteConfig() {
     return {
-      tags: [ 'P' ],
+      tags: ["P"]
     };
   }
-
   /**
    * Icon and title for displaying at the Toolbox
    *
@@ -272,8 +189,11 @@ export default class Paragraph {
    */
   static get toolbox() {
     return {
-      icon: IconText,
-      title: 'Text',
+      icon: s,
+      title: "Text"
     };
   }
 }
+export {
+  a as default
+};
