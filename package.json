@@ -20,6 +20,7 @@
       "require": "./dist/paragraph.umd.cjs"
     }
   },
+  "jsdelivr": "./dist/paragraph.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
