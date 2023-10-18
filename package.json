@@ -1,6 +1,6 @@
 {
   "name": "@editorjs/paragraph",
-  "version": "2.11.2",
+  "version": "2.11.3",
   "keywords": [
     "codex editor",
     "paragraph",
@@ -10,17 +10,15 @@
   "description": "Paragraph Tool for Editor.js",
   "license": "MIT",
   "repository": "https://github.com/editor-js/paragraph",
-  "type": "module",
   "files": ["dist"],
-  "main": "./dist/paragraph.umd.cjs",
-  "module": "./dist/paragraph.js",
+  "main": "./dist/paragraph.umd.js",
+  "module": "./dist/paragraph.mjs",
   "exports": {
     ".": {
-      "import": "./dist/paragraph.js",
-      "require": "./dist/paragraph.umd.cjs"
+      "import": "./dist/paragraph.mjs",
+      "require": "./dist/paragraph.umd.js"
     }
   },
-  "jsdelivr": "./dist/paragraph.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
