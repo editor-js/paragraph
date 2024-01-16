@@ -10,7 +10,9 @@
   "description": "Paragraph Tool for Editor.js",
   "license": "MIT",
   "repository": "https://github.com/editor-js/paragraph",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/paragraph.umd.js",
   "module": "./dist/paragraph.mjs",
   "exports": {
@@ -33,6 +35,7 @@
     "vite-plugin-css-injected-by-js": "^3.3.0"
   },
   "dependencies": {
-    "@codexteam/icons": "^0.0.4"
+    "@codexteam/icons": "^0.0.4",
+    "typescript": "^5.3.3"
   }
 }

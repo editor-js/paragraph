@@ -27,7 +27,7 @@ option of the editor config.
 Add a new Tool to the `tools` property of the Editor.js initial config.
 
 ```javascript
-var editor = EditorJS({
+const editor = EditorJS({
   ...
 
   tools: {
