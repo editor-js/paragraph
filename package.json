@@ -15,6 +15,7 @@
   ],
   "main": "./dist/paragraph.umd.js",
   "module": "./dist/paragraph.mjs",
+  "types": "./paragraph.d.ts",
   "exports": {
     ".": {
       "import": "./dist/paragraph.mjs",

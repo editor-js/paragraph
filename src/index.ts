@@ -3,7 +3,7 @@
  */
 import './index.css';
 
-// @ts-ingnore
+// @ts-ignore
 import { IconText } from '@codexteam/icons';
 
 import { API, BlockTool, PasteEvent } from '@editorjs/editorjs';
@@ -43,7 +43,7 @@ export default class Paragraph implements BlockTool {
   /**
    * Tool's element
    */
-  private readonly element: HTMLDivElement;
+  private element: HTMLDivElement;
 
   /**
    * CSS classes
@@ -62,8 +62,6 @@ export default class Paragraph implements BlockTool {
 
   /**
    * Default placeholder for Paragraph Tool
-   *
-   * @class
    */
   static get DEFAULT_PLACEHOLDER(): string {
     return '';
@@ -159,7 +157,7 @@ export default class Paragraph implements BlockTool {
    * @returns false if saved data is not correct, otherwise true
    */
   public validate(savedData: ParagraphData): boolean {
-    if (savedData.text.trim() === '' && !this.preserveBlank) {
+    if ((savedData.text || '').trim() === '' && !this.preserveBlank) {
       return false;
     }
 
