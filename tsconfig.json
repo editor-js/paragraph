@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "CommonJS",
+        "lib": ["ES2020", "DOM"],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "dist"
+    },
+    "include": [
+        "paragraph.d.ts",
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
