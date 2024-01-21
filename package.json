@@ -15,7 +15,7 @@
   ],
   "main": "./dist/paragraph.umd.js",
   "module": "./dist/paragraph.mjs",
-  "types": "./paragraph.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/paragraph.mjs",
@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "vite": "^4.4.11",
-    "vite-plugin-css-injected-by-js": "^3.3.0"
+    "vite-plugin-css-injected-by-js": "^3.3.0",
+    "vite-plugin-dts": "^3.7.1"
   },
   "dependencies": {
     "@codexteam/icons": "^0.0.4",
