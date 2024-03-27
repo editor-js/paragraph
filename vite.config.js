@@ -20,6 +20,6 @@ export default {
   },
 
   plugins: [
-    cssInjectedByJsPlugin(),
+    cssInjectedByJsPlugin({useStrictCSP: true}),
   ],
 };
