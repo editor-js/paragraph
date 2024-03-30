@@ -11,7 +11,7 @@ export default function makeFragment(htmlString) {
 
   const fragment = document.createDocumentFragment();
 
-  fragment.appendChild(...Array.from(tempDiv.childNodes));
+  fragment.append(...Array.from(tempDiv.childNodes));
 
   return fragment;
 }

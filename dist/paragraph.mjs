@@ -1,10 +1,10 @@
 (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")),document.head.appendChild(e)}}catch(t){console.error("vite-plugin-css-injected-by-js",t)}})();
 const s = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
-function l(r) {
+function o(r) {
   const t = document.createElement("div");
   t.innerHTML = r.trim();
   const e = document.createDocumentFragment();
-  return e.appendChild(...Array.from(t.childNodes)), e;
+  return e.append(...Array.from(t.childNodes)), e;
 }
 /**
  * Base Paragraph Block for the Editor.js.
@@ -78,7 +78,7 @@ class n {
    */
   merge(t) {
     this._data.text += t.text;
-    const e = l(t.text);
+    const e = o(t.text);
     this._element.appendChild(e), this._element.normalize();
   }
   /**
