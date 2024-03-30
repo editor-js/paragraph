@@ -132,8 +132,6 @@ export default class Paragraph {
    * @public
    */
   merge(data) {
-    console.log('merge !!!')
-
     this._data.text += data.text;
 
     /**
@@ -143,6 +141,8 @@ export default class Paragraph {
     const fragment = makeFragment(data.text);
 
     this._element.appendChild(fragment);
+
+    this._element.normalize();
   }
 
   /**
