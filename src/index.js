@@ -4,6 +4,7 @@
 import './index.css';
 
 import { IconText } from '@codexteam/icons'
+import makeFragment from './utils/makeFragment';
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -64,11 +65,9 @@ export default class Paragraph {
      * @type {string}
      */
     this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
-    this._data = {};
+    this._data = data ?? {};
     this._element = null;
     this._preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
-
-    this.data = data;
   }
 
   /**
@@ -133,11 +132,17 @@ export default class Paragraph {
    * @public
    */
   merge(data) {
-    const newData = {
-      text : this.data.text + data.text,
-    };
+    console.log('merge !!!')
 
-    this.data = newData;
+    this._data.text += data.text;
+
+    /**
+     * We use appendChild instead of innerHTML to keep the links of the existing nodes
+     * (for example, shadow caret)
+     */
+    const fragment = makeFragment(data.text);
+
+    this._element.appendChild(fragment);
   }
 
   /**
@@ -179,7 +184,14 @@ export default class Paragraph {
       text: event.detail.data.innerHTML,
     };
 
-    this.data = data;
+    this._data = data;
+
+    /**
+     * We use requestAnimationFrame for performance purposes
+     */
+    window.requestAnimationFrame(() => {
+      this._element.innerHTML = this._data.text || '';
+    });
   }
 
   /**
@@ -210,47 +222,6 @@ export default class Paragraph {
    */
   static get isReadOnlySupported() {
     return true;
-  }
-
-  /**
-   * Get current Tools`s data
-   *
-   * @returns {ParagraphData} Current data
-   * @private
-   */
-  get data() {
-    if (this._element !== null) {
-      const text = this._element.innerHTML;
-
-      this._data.text = text;
-    }
-
-    return this._data;
-  }
-
-  /**
-   * Store data in plugin:
-   * - at the this._data property
-   * - at the HTML
-   *
-   * @param {ParagraphData} data — data to set
-   * @private
-   */
-  set data(data) {
-    this._data = data || {};
-
-    if (this._element !== null) {
-      this.hydrate();
-    }
-  }
-
-  /**
-   * Fill tool's view with data
-   */
-  hydrate(){
-    window.requestAnimationFrame(() => {
-      this._element.innerHTML = this._data.text || '';
-    });
   }
 
   /**
