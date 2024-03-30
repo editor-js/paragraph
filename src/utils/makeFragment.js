@@ -9,11 +9,9 @@ export default function makeFragment(htmlString) {
 
   tempDiv.innerHTML = htmlString.trim();
 
-  var fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
-  while (tempDiv.firstChild) {
-    fragment.appendChild(tempDiv.firstChild);
-  }
+  fragment.appendChild(...Array.from(tempDiv.childNodes));
 
   return fragment;
 }
