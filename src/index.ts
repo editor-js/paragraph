@@ -1,10 +1,17 @@
 /**
  * Build styles
  */
-import './index.css';
+import "./index.css";
 
-import { IconText } from '@codexteam/icons'
-import makeFragment from './utils/makeFragment';
+import { IconText } from "@codexteam/icons";
+import makeFragment from "./utils/makeFragment";
+
+import type {
+  API,
+  HTMLPasteEvent,
+  PasteConfig,
+  ToolConfig,
+} from "@editorjs/editorjs";
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -20,12 +27,39 @@ import makeFragment from './utils/makeFragment';
  * @property {string} placeholder - placeholder for the empty paragraph
  * @property {boolean} preserveBlank - Whether or not to keep blank paragraphs when saving editor data
  */
+interface ParagraphConfig extends ToolConfig {
+  /**
+   * Placeholder for the empty paragraph
+   */
+  placeholder?: string;
+
+  /**
+   * Whether or not to keep blank paragraphs when saving editor data
+   */
+  preserveBlank?: boolean;
+}
 
 /**
  * @typedef {object} ParagraphData
  * @description Tool's input and output data format
  * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
+interface ParagraphData {
+  text: string;
+}
+
+interface ParagraphParams {
+  data: ParagraphData;
+  config: ParagraphConfig;
+  api: API;
+  readOnly: boolean;
+}
+
+interface ParagraphCSS {
+  block: string;
+  wrapper: string;
+}
+
 export default class Paragraph {
   /**
    * Default placeholder for Paragraph Tool
@@ -34,8 +68,16 @@ export default class Paragraph {
    * @class
    */
   static get DEFAULT_PLACEHOLDER() {
-    return '';
+    return "";
   }
+
+  api: API;
+  readOnly: boolean;
+  private _CSS: ParagraphCSS;
+  private _placeholder: string;
+  private _data: ParagraphData;
+  private _element: HTMLDivElement | null;
+  private _preserveBlank: boolean;
 
   /**
    * Render plugin`s main Element and fill it with saved data
@@ -46,13 +88,13 @@ export default class Paragraph {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({ data, config, api, readOnly }) {
+  constructor({ data, config, api, readOnly }: ParagraphParams) {
     this.api = api;
     this.readOnly = readOnly;
 
     this._CSS = {
       block: this.api.styles.block,
-      wrapper: 'ce-paragraph',
+      wrapper: "ce-paragraph",
     };
 
     if (!this.readOnly) {
@@ -64,10 +106,13 @@ export default class Paragraph {
      *
      * @type {string}
      */
-    this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
+    this._placeholder = config.placeholder
+      ? config.placeholder
+      : Paragraph.DEFAULT_PLACEHOLDER;
     this._data = data ?? {};
     this._element = null;
-    this._preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
+    this._preserveBlank =
+      config.preserveBlank !== undefined ? config.preserveBlank : false;
   }
 
   /**
@@ -76,29 +121,33 @@ export default class Paragraph {
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e) {
-    if (e.code !== 'Backspace' && e.code !== 'Delete') {
+  onKeyUp(e: KeyboardEvent) {
+    if (e.code !== "Backspace" && e.code !== "Delete") {
+      return;
+    }
+
+    if (!this._element) {
       return;
     }
 
     const { textContent } = this._element;
 
-    if (textContent === '') {
-      this._element.innerHTML = '';
+    if (textContent === "") {
+      this._element.innerHTML = "";
     }
   }
 
   /**
    * Create Tool's view
    *
-   * @returns {HTMLElement}
+   * @returns {HTMLDivElement}
    * @private
    */
-  drawView() {
-    const div = document.createElement('DIV');
+  drawView(): HTMLDivElement {
+    const div = document.createElement("DIV");
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = false;
+    div.contentEditable = "false";
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
     if (this._data.text) {
@@ -106,11 +155,14 @@ export default class Paragraph {
     }
 
     if (!this.readOnly) {
-      div.contentEditable = true;
-      div.addEventListener('keyup', this.onKeyUp);
+      div.contentEditable = "true";
+      div.addEventListener("keyup", this.onKeyUp);
     }
 
-    return div;
+    /**
+     * bypass property 'align' required in html div element
+     */
+    return div as HTMLDivElement;
   }
 
   /**
@@ -118,7 +170,7 @@ export default class Paragraph {
    *
    * @returns {HTMLDivElement}
    */
-  render() {
+  render(): HTMLDivElement {
     this._element = this.drawView();
 
     return this._element;
@@ -131,7 +183,11 @@ export default class Paragraph {
    * @param {ParagraphData} data
    * @public
    */
-  merge(data) {
+  merge(data: ParagraphData) {
+    if (!this._element) {
+      return;
+    }
+
     this._data.text += data.text;
 
     /**
@@ -153,8 +209,8 @@ export default class Paragraph {
    * @returns {boolean} false if saved data is not correct, otherwise true
    * @public
    */
-  validate(savedData) {
-    if (savedData.text.trim() === '' && !this._preserveBlank) {
+  validate(savedData: ParagraphData): boolean {
+    if (savedData.text.trim() === "" && !this._preserveBlank) {
       return false;
     }
 
@@ -168,7 +224,7 @@ export default class Paragraph {
    * @returns {ParagraphData} - saved data
    * @public
    */
-  save(toolsContent) {
+  save(toolsContent: HTMLDivElement): ParagraphData {
     return {
       text: toolsContent.innerHTML,
     };
@@ -177,9 +233,9 @@ export default class Paragraph {
   /**
    * On paste callback fired from Editor.
    *
-   * @param {PasteEvent} event - event with pasted data
+   * @param {HTMLPasteEvent} event - event with pasted data
    */
-  onPaste(event) {
+  onPaste(event: HTMLPasteEvent) {
     const data = {
       text: event.detail.data.innerHTML,
     };
@@ -190,7 +246,10 @@ export default class Paragraph {
      * We use requestAnimationFrame for performance purposes
      */
     window.requestAnimationFrame(() => {
-      this._element.innerHTML = this._data.text || '';
+      if (!this._element) {
+        return;
+      }
+      this._element.innerHTML = this._data.text || "";
     });
   }
 
@@ -199,8 +258,8 @@ export default class Paragraph {
    */
   static get conversionConfig() {
     return {
-      export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
-      import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
+      export: "text", // to convert Paragraph to other block, use 'text' property of saved data
+      import: "text", // to covert other block's exported string to Paragraph, fill 'text' property of tool data
     };
   }
 
@@ -220,7 +279,7 @@ export default class Paragraph {
    *
    * @returns {boolean}
    */
-  static get isReadOnlySupported() {
+  static get isReadOnlySupported(): boolean {
     return true;
   }
 
@@ -228,11 +287,11 @@ export default class Paragraph {
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
    *
-   * @returns {{tags: string[]}}
+   * @returns {PasteConfig}
    */
-  static get pasteConfig() {
+  static get pasteConfig(): PasteConfig {
     return {
-      tags: [ 'P' ],
+      tags: ["P"],
     };
   }
 
@@ -241,10 +300,10 @@ export default class Paragraph {
    *
    * @returns {{icon: string, title: string}}
    */
-  static get toolbox() {
+  static get toolbox(): { icon: string; title: string } {
     return {
       icon: IconText,
-      title: 'Text',
+      title: "Text",
     };
   }
 }

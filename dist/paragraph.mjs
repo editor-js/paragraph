@@ -1,6 +1,6 @@
 (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")),document.head.appendChild(e)}}catch(t){console.error("vite-plugin-css-injected-by-js",t)}})();
-const s = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
-function o(r) {
+const a = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
+function l(r) {
   const t = document.createElement("div");
   t.innerHTML = r.trim();
   const e = document.createDocumentFragment();
@@ -33,8 +33,8 @@ class n {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({ data: t, config: e, api: i, readOnly: a }) {
-    this.api = i, this.readOnly = a, this._CSS = {
+  constructor({ data: t, config: e, api: i, readOnly: s }) {
+    this.api = i, this.readOnly = s, this._CSS = {
       block: this.api.styles.block,
       wrapper: "ce-paragraph"
     }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = e.placeholder ? e.placeholder : n.DEFAULT_PLACEHOLDER, this._data = t ?? {}, this._element = null, this._preserveBlank = e.preserveBlank !== void 0 ? e.preserveBlank : !1;
@@ -46,7 +46,7 @@ class n {
    * @param {KeyboardEvent} e - key up event
    */
   onKeyUp(t) {
-    if (t.code !== "Backspace" && t.code !== "Delete")
+    if (t.code !== "Backspace" && t.code !== "Delete" || !this._element)
       return;
     const { textContent: e } = this._element;
     e === "" && (this._element.innerHTML = "");
@@ -54,12 +54,12 @@ class n {
   /**
    * Create Tool's view
    *
-   * @returns {HTMLElement}
+   * @returns {HTMLDivElement}
    * @private
    */
   drawView() {
     const t = document.createElement("DIV");
-    return t.classList.add(this._CSS.wrapper, this._CSS.block), t.contentEditable = !1, t.dataset.placeholder = this.api.i18n.t(this._placeholder), this._data.text && (t.innerHTML = this._data.text), this.readOnly || (t.contentEditable = !0, t.addEventListener("keyup", this.onKeyUp)), t;
+    return t.classList.add(this._CSS.wrapper, this._CSS.block), t.contentEditable = "false", t.dataset.placeholder = this.api.i18n.t(this._placeholder), this._data.text && (t.innerHTML = this._data.text), this.readOnly || (t.contentEditable = "true", t.addEventListener("keyup", this.onKeyUp)), t;
   }
   /**
    * Return Tool's view
@@ -77,8 +77,10 @@ class n {
    * @public
    */
   merge(t) {
+    if (!this._element)
+      return;
     this._data.text += t.text;
-    const e = o(t.text);
+    const e = l(t.text);
     this._element.appendChild(e), this._element.normalize();
   }
   /**
@@ -107,14 +109,14 @@ class n {
   /**
    * On paste callback fired from Editor.
    *
-   * @param {PasteEvent} event - event with pasted data
+   * @param {HTMLPasteEvent} event - event with pasted data
    */
   onPaste(t) {
     const e = {
       text: t.detail.data.innerHTML
     };
     this._data = e, window.requestAnimationFrame(() => {
-      this._element.innerHTML = this._data.text || "";
+      this._element && (this._element.innerHTML = this._data.text || "");
     });
   }
   /**
@@ -150,7 +152,7 @@ class n {
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
    *
-   * @returns {{tags: string[]}}
+   * @returns {PasteConfig}
    */
   static get pasteConfig() {
     return {
@@ -164,7 +166,7 @@ class n {
    */
   static get toolbox() {
     return {
-      icon: s,
+      icon: a,
       title: "Text"
     };
   }
