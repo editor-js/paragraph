@@ -5,7 +5,7 @@
  * @returns {DocumentFragment}
  */
 export default function makeFragment(htmlString: string): DocumentFragment {
-  const tempDiv = document.createElement("div");
+  const tempDiv = document.createElement('div');
 
   tempDiv.innerHTML = htmlString.trim();
 

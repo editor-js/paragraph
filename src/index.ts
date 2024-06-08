@@ -1,17 +1,17 @@
 /**
  * Build styles
  */
-import "./index.css";
+import './index.css';
 
-import { IconText } from "@codexteam/icons";
-import makeFragment from "./utils/makeFragment";
+import { IconText } from '@codexteam/icons';
+import makeFragment from './utils/makeFragment';
 
 import type {
   API,
   HTMLPasteEvent,
   PasteConfig,
   ToolConfig,
-} from "@editorjs/editorjs";
+} from '@editorjs/editorjs';
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -68,7 +68,7 @@ export default class Paragraph {
    * @class
    */
   static get DEFAULT_PLACEHOLDER() {
-    return "";
+    return '';
   }
 
   api: API;
@@ -94,7 +94,7 @@ export default class Paragraph {
 
     this._CSS = {
       block: this.api.styles.block,
-      wrapper: "ce-paragraph",
+      wrapper: 'ce-paragraph',
     };
 
     if (!this.readOnly) {
@@ -122,7 +122,7 @@ export default class Paragraph {
    * @param {KeyboardEvent} e - key up event
    */
   onKeyUp(e: KeyboardEvent) {
-    if (e.code !== "Backspace" && e.code !== "Delete") {
+    if (e.code !== 'Backspace' && e.code !== 'Delete') {
       return;
     }
 
@@ -132,8 +132,8 @@ export default class Paragraph {
 
     const { textContent } = this._element;
 
-    if (textContent === "") {
-      this._element.innerHTML = "";
+    if (textContent === '') {
+      this._element.innerHTML = '';
     }
   }
 
@@ -144,10 +144,10 @@ export default class Paragraph {
    * @private
    */
   drawView(): HTMLDivElement {
-    const div = document.createElement("DIV");
+    const div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = "false";
+    div.contentEditable = 'false';
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
     if (this._data.text) {
@@ -155,8 +155,8 @@ export default class Paragraph {
     }
 
     if (!this.readOnly) {
-      div.contentEditable = "true";
-      div.addEventListener("keyup", this.onKeyUp);
+      div.contentEditable = 'true';
+      div.addEventListener('keyup', this.onKeyUp);
     }
 
     /**
@@ -210,7 +210,7 @@ export default class Paragraph {
    * @public
    */
   validate(savedData: ParagraphData): boolean {
-    if (savedData.text.trim() === "" && !this._preserveBlank) {
+    if (savedData.text.trim() === '' && !this._preserveBlank) {
       return false;
     }
 
@@ -249,7 +249,7 @@ export default class Paragraph {
       if (!this._element) {
         return;
       }
-      this._element.innerHTML = this._data.text || "";
+      this._element.innerHTML = this._data.text || '';
     });
   }
 
@@ -258,8 +258,8 @@ export default class Paragraph {
    */
   static get conversionConfig() {
     return {
-      export: "text", // to convert Paragraph to other block, use 'text' property of saved data
-      import: "text", // to covert other block's exported string to Paragraph, fill 'text' property of tool data
+      export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
+      import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
     };
   }
 
@@ -291,7 +291,7 @@ export default class Paragraph {
    */
   static get pasteConfig(): PasteConfig {
     return {
-      tags: ["P"],
+      tags: ['P'],
     };
   }
 
@@ -303,7 +303,7 @@ export default class Paragraph {
   static get toolbox(): { icon: string; title: string } {
     return {
       icon: IconText,
-      title: "Text",
+      title: 'Text',
     };
   }
 }
