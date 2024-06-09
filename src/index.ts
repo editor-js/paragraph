@@ -63,9 +63,21 @@ interface ParagraphData {
  * @property {boolean} readOnly - Is paragraph is read-only.
  */
 interface ParagraphParams {
+  /**
+   * Initial data for the paragraph
+   */
   data: ParagraphData;
+  /**
+   * Paragraph tool configuration
+   */
   config: ParagraphConfig;
+  /**
+   * Editor.js API
+   */
   api: API;
+  /**
+   * Is paragraph read-only.
+   */
   readOnly: boolean;
 }
 
@@ -76,7 +88,13 @@ interface ParagraphParams {
  * @property {string} wrapper - Paragraph CSS Class
  */
 interface ParagraphCSS {
+  /**
+   * Editor.js CSS Class for block
+   */
   block: string;
+  /**
+   * Paragraph CSS Class
+   */
   wrapper: string;
 }
 
