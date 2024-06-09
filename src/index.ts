@@ -8,9 +8,12 @@ import makeFragment from './utils/makeFragment';
 
 import type {
   API,
+  ConversionConfig,
   HTMLPasteEvent,
   PasteConfig,
+  SanitizerConfig,
   ToolConfig,
+  ToolboxConfig,
 } from '@editorjs/editorjs';
 
 /**
@@ -45,9 +48,20 @@ interface ParagraphConfig extends ToolConfig {
  * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
 interface ParagraphData {
+  /**
+   * Paragraph's content
+   */
   text: string;
 }
 
+/**
+ * @typedef {object} ParagraphParams
+ * @description Constructor params for the Paragraph tool, use to pass initial data and settings
+ * @property {ParagraphData} data - Preload data for the paragraph.
+ * @property {ParagraphConfig} config - The configuration for the paragraph.
+ * @property {API} api - The Editor.js API.
+ * @property {boolean} readOnly - Is paragraph is read-only.
+ */
 interface ParagraphParams {
   data: ParagraphData;
   config: ParagraphConfig;
@@ -55,6 +69,12 @@ interface ParagraphParams {
   readOnly: boolean;
 }
 
+/**
+ * @typedef {object} ParagraphCSS
+ * @description CSS classes names
+ * @property {string} block - Editor.js CSS Class for block
+ * @property {string} wrapper - Paragraph CSS Class
+ */
 interface ParagraphCSS {
   block: string;
   wrapper: string;
@@ -71,12 +91,39 @@ export default class Paragraph {
     return '';
   }
 
+  /**
+   * The Editor.js API
+   */
   api: API;
+
+  /**
+   * Is Paragraph Tool read-only
+   */
   readOnly: boolean;
+
+  /**
+   * Paragraph Tool's CSS classes
+   */
   private _CSS: ParagraphCSS;
+
+  /**
+   * Placeholder for Paragraph Tool
+   */
   private _placeholder: string;
+
+  /**
+   * Paragraph's data
+   */
   private _data: ParagraphData;
+
+  /**
+   * Paragraph's main Element
+   */
   private _element: HTMLDivElement | null;
+
+  /**
+   * Whether or not to keep blank paragraphs when saving editor data
+   */
   private _preserveBlank: boolean;
 
   /**
@@ -111,8 +158,7 @@ export default class Paragraph {
       : Paragraph.DEFAULT_PLACEHOLDER;
     this._data = data ?? {};
     this._element = null;
-    this._preserveBlank =
-      config.preserveBlank !== undefined ? config.preserveBlank : false;
+    this._preserveBlank = config.preserveBlank ?? false;
   }
 
   /**
@@ -121,7 +167,7 @@ export default class Paragraph {
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e: KeyboardEvent) {
+  onKeyUp(e: KeyboardEvent): void {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
       return;
     }
@@ -183,7 +229,7 @@ export default class Paragraph {
    * @param {ParagraphData} data
    * @public
    */
-  merge(data: ParagraphData) {
+  merge(data: ParagraphData): void {
     if (!this._element) {
       return;
     }
@@ -235,7 +281,7 @@ export default class Paragraph {
    *
    * @param {HTMLPasteEvent} event - event with pasted data
    */
-  onPaste(event: HTMLPasteEvent) {
+  onPaste(event: HTMLPasteEvent): void {
     const data = {
       text: event.detail.data.innerHTML,
     };
@@ -255,8 +301,9 @@ export default class Paragraph {
 
   /**
    * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
+   * @returns {ConversionConfig}
    */
-  static get conversionConfig() {
+  static get conversionConfig(): ConversionConfig {
     return {
       export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
       import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
@@ -265,8 +312,9 @@ export default class Paragraph {
 
   /**
    * Sanitizer rules
+   * @returns {SanitizerConfig} - Edtior.js sanitizer config
    */
-  static get sanitize() {
+  static get sanitize(): SanitizerConfig {
     return {
       text: {
         br: true,
@@ -287,7 +335,7 @@ export default class Paragraph {
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
    *
-   * @returns {PasteConfig}
+   * @returns {PasteConfig} - Paragraph Paste Setting
    */
   static get pasteConfig(): PasteConfig {
     return {
@@ -298,9 +346,9 @@ export default class Paragraph {
   /**
    * Icon and title for displaying at the Toolbox
    *
-   * @returns {{icon: string, title: string}}
+   * @returns {ToolboxConfig} - Paragraph Toolbox Setting
    */
-  static get toolbox(): { icon: string; title: string } {
+  static get toolbox(): ToolboxConfig {
     return {
       icon: IconText,
       title: 'Text',
