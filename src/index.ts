@@ -3,8 +3,18 @@
  */
 import './index.css';
 
-import { IconText } from '@codexteam/icons'
+import { IconText } from '@codexteam/icons';
 import makeFragment from './utils/makeFragment';
+
+import type {
+  API,
+  ConversionConfig,
+  HTMLPasteEvent,
+  PasteConfig,
+  SanitizerConfig,
+  ToolConfig,
+  ToolboxConfig,
+} from '@editorjs/editorjs';
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -20,12 +30,74 @@ import makeFragment from './utils/makeFragment';
  * @property {string} placeholder - placeholder for the empty paragraph
  * @property {boolean} preserveBlank - Whether or not to keep blank paragraphs when saving editor data
  */
+export interface ParagraphConfig extends ToolConfig {
+  /**
+   * Placeholder for the empty paragraph
+   */
+  placeholder?: string;
+
+  /**
+   * Whether or not to keep blank paragraphs when saving editor data
+   */
+  preserveBlank?: boolean;
+}
 
 /**
  * @typedef {object} ParagraphData
  * @description Tool's input and output data format
  * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
+export interface ParagraphData {
+  /**
+   * Paragraph's content
+   */
+  text: string;
+}
+
+/**
+ * @typedef {object} ParagraphParams
+ * @description Constructor params for the Paragraph tool, use to pass initial data and settings
+ * @property {ParagraphData} data - Preload data for the paragraph.
+ * @property {ParagraphConfig} config - The configuration for the paragraph.
+ * @property {API} api - The Editor.js API.
+ * @property {boolean} readOnly - Is paragraph is read-only.
+ */
+interface ParagraphParams {
+  /**
+   * Initial data for the paragraph
+   */
+  data: ParagraphData;
+  /**
+   * Paragraph tool configuration
+   */
+  config: ParagraphConfig;
+  /**
+   * Editor.js API
+   */
+  api: API;
+  /**
+   * Is paragraph read-only.
+   */
+  readOnly: boolean;
+}
+
+/**
+ * @typedef {object} ParagraphCSS
+ * @description CSS classes names
+ * @property {string} block - Editor.js CSS Class for block
+ * @property {string} wrapper - Paragraph CSS Class
+ */
+interface ParagraphCSS {
+  /**
+   * Editor.js CSS Class for block
+   */
+  block: string;
+  /**
+   * Paragraph CSS Class
+   */
+  wrapper: string;
+}
+
 export default class Paragraph {
   /**
    * Default placeholder for Paragraph Tool
@@ -38,6 +110,41 @@ export default class Paragraph {
   }
 
   /**
+   * The Editor.js API
+   */
+  api: API;
+
+  /**
+   * Is Paragraph Tool read-only
+   */
+  readOnly: boolean;
+
+  /**
+   * Paragraph Tool's CSS classes
+   */
+  private _CSS: ParagraphCSS;
+
+  /**
+   * Placeholder for Paragraph Tool
+   */
+  private _placeholder: string;
+
+  /**
+   * Paragraph's data
+   */
+  private _data: ParagraphData;
+
+  /**
+   * Paragraph's main Element
+   */
+  private _element: HTMLDivElement | null;
+
+  /**
+   * Whether or not to keep blank paragraphs when saving editor data
+   */
+  private _preserveBlank: boolean;
+
+  /**
    * Render plugin`s main Element and fill it with saved data
    *
    * @param {object} params - constructor params
@@ -46,7 +153,7 @@ export default class Paragraph {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({ data, config, api, readOnly }) {
+  constructor({ data, config, api, readOnly }: ParagraphParams) {
     this.api = api;
     this.readOnly = readOnly;
 
@@ -64,10 +171,12 @@ export default class Paragraph {
      *
      * @type {string}
      */
-    this._placeholder = config.placeholder ? config.placeholder : Paragraph.DEFAULT_PLACEHOLDER;
+    this._placeholder = config.placeholder
+      ? config.placeholder
+      : Paragraph.DEFAULT_PLACEHOLDER;
     this._data = data ?? {};
     this._element = null;
-    this._preserveBlank = config.preserveBlank !== undefined ? config.preserveBlank : false;
+    this._preserveBlank = config.preserveBlank ?? false;
   }
 
   /**
@@ -76,8 +185,12 @@ export default class Paragraph {
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e) {
+  onKeyUp(e: KeyboardEvent): void {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
+      return;
+    }
+
+    if (!this._element) {
       return;
     }
 
@@ -91,14 +204,14 @@ export default class Paragraph {
   /**
    * Create Tool's view
    *
-   * @returns {HTMLElement}
+   * @returns {HTMLDivElement}
    * @private
    */
-  drawView() {
+  drawView(): HTMLDivElement {
     const div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = false;
+    div.contentEditable = 'false';
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
     if (this._data.text) {
@@ -106,11 +219,14 @@ export default class Paragraph {
     }
 
     if (!this.readOnly) {
-      div.contentEditable = true;
+      div.contentEditable = 'true';
       div.addEventListener('keyup', this.onKeyUp);
     }
 
-    return div;
+    /**
+     * bypass property 'align' required in html div element
+     */
+    return div as HTMLDivElement;
   }
 
   /**
@@ -118,7 +234,7 @@ export default class Paragraph {
    *
    * @returns {HTMLDivElement}
    */
-  render() {
+  render(): HTMLDivElement {
     this._element = this.drawView();
 
     return this._element;
@@ -131,7 +247,11 @@ export default class Paragraph {
    * @param {ParagraphData} data
    * @public
    */
-  merge(data) {
+  merge(data: ParagraphData): void {
+    if (!this._element) {
+      return;
+    }
+
     this._data.text += data.text;
 
     /**
@@ -153,7 +273,7 @@ export default class Paragraph {
    * @returns {boolean} false if saved data is not correct, otherwise true
    * @public
    */
-  validate(savedData) {
+  validate(savedData: ParagraphData): boolean {
     if (savedData.text.trim() === '' && !this._preserveBlank) {
       return false;
     }
@@ -168,7 +288,7 @@ export default class Paragraph {
    * @returns {ParagraphData} - saved data
    * @public
    */
-  save(toolsContent) {
+  save(toolsContent: HTMLDivElement): ParagraphData {
     return {
       text: toolsContent.innerHTML,
     };
@@ -177,9 +297,9 @@ export default class Paragraph {
   /**
    * On paste callback fired from Editor.
    *
-   * @param {PasteEvent} event - event with pasted data
+   * @param {HTMLPasteEvent} event - event with pasted data
    */
-  onPaste(event) {
+  onPaste(event: HTMLPasteEvent): void {
     const data = {
       text: event.detail.data.innerHTML,
     };
@@ -190,14 +310,18 @@ export default class Paragraph {
      * We use requestAnimationFrame for performance purposes
      */
     window.requestAnimationFrame(() => {
+      if (!this._element) {
+        return;
+      }
       this._element.innerHTML = this._data.text || '';
     });
   }
 
   /**
    * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
+   * @returns {ConversionConfig}
    */
-  static get conversionConfig() {
+  static get conversionConfig(): ConversionConfig {
     return {
       export: 'text', // to convert Paragraph to other block, use 'text' property of saved data
       import: 'text', // to covert other block's exported string to Paragraph, fill 'text' property of tool data
@@ -206,8 +330,9 @@ export default class Paragraph {
 
   /**
    * Sanitizer rules
+   * @returns {SanitizerConfig} - Edtior.js sanitizer config
    */
-  static get sanitize() {
+  static get sanitize(): SanitizerConfig {
     return {
       text: {
         br: true,
@@ -220,7 +345,7 @@ export default class Paragraph {
    *
    * @returns {boolean}
    */
-  static get isReadOnlySupported() {
+  static get isReadOnlySupported(): boolean {
     return true;
   }
 
@@ -228,20 +353,20 @@ export default class Paragraph {
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
    *
-   * @returns {{tags: string[]}}
+   * @returns {PasteConfig} - Paragraph Paste Setting
    */
-  static get pasteConfig() {
+  static get pasteConfig(): PasteConfig {
     return {
-      tags: [ 'P' ],
+      tags: ['P'],
     };
   }
 
   /**
    * Icon and title for displaying at the Toolbox
    *
-   * @returns {{icon: string, title: string}}
+   * @returns {ToolboxConfig} - Paragraph Toolbox Setting
    */
-  static get toolbox() {
+  static get toolbox(): ToolboxConfig {
     return {
       icon: IconText,
       title: 'Text',
