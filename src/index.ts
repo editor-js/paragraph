@@ -30,7 +30,7 @@ import type {
  * @property {string} placeholder - placeholder for the empty paragraph
  * @property {boolean} preserveBlank - Whether or not to keep blank paragraphs when saving editor data
  */
-interface ParagraphConfig extends ToolConfig {
+export interface ParagraphConfig extends ToolConfig {
   /**
    * Placeholder for the empty paragraph
    */
@@ -47,7 +47,7 @@ interface ParagraphConfig extends ToolConfig {
  * @description Tool's input and output data format
  * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
-interface ParagraphData {
+export interface ParagraphData {
   /**
    * Paragraph's content
    */
