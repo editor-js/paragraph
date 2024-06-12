@@ -37,7 +37,7 @@ class n {
     this.api = i, this.readOnly = s, this._CSS = {
       block: this.api.styles.block,
       wrapper: "ce-paragraph"
-    }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = e.placeholder ? e.placeholder : n.DEFAULT_PLACEHOLDER, this._data = t ?? {}, this._element = null, this._preserveBlank = e.preserveBlank !== void 0 ? e.preserveBlank : !1;
+    }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = e.placeholder ? e.placeholder : n.DEFAULT_PLACEHOLDER, this._data = t ?? {}, this._element = null, this._preserveBlank = e.preserveBlank ?? !1;
   }
   /**
    * Check if text content is empty and set empty string to inner html.
@@ -121,6 +121,7 @@ class n {
   }
   /**
    * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
+   * @returns {ConversionConfig}
    */
   static get conversionConfig() {
     return {
@@ -132,6 +133,7 @@ class n {
   }
   /**
    * Sanitizer rules
+   * @returns {SanitizerConfig} - Edtior.js sanitizer config
    */
   static get sanitize() {
     return {
@@ -152,7 +154,7 @@ class n {
    * Used by Editor paste handling API.
    * Provides configuration to handle P tags.
    *
-   * @returns {PasteConfig}
+   * @returns {PasteConfig} - Paragraph Paste Setting
    */
   static get pasteConfig() {
     return {
@@ -162,7 +164,7 @@ class n {
   /**
    * Icon and title for displaying at the Toolbox
    *
-   * @returns {{icon: string, title: string}}
+   * @returns {ToolboxConfig} - Paragraph Toolbox Setting
    */
   static get toolbox() {
     return {

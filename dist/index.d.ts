@@ -1,4 +1,4 @@
-import { API, HTMLPasteEvent, PasteConfig, ToolConfig } from '@editorjs/editorjs';
+import { API, ConversionConfig, HTMLPasteEvent, PasteConfig, SanitizerConfig, ToolConfig, ToolboxConfig } from '@editorjs/editorjs';
 
 /**
  * Base Paragraph Block for the Editor.js.
@@ -13,7 +13,7 @@ import { API, HTMLPasteEvent, PasteConfig, ToolConfig } from '@editorjs/editorjs
  * @property {string} placeholder - placeholder for the empty paragraph
  * @property {boolean} preserveBlank - Whether or not to keep blank paragraphs when saving editor data
  */
-interface ParagraphConfig extends ToolConfig {
+export interface ParagraphConfig extends ToolConfig {
     /**
      * Placeholder for the empty paragraph
      */
@@ -28,13 +28,36 @@ interface ParagraphConfig extends ToolConfig {
  * @description Tool's input and output data format
  * @property {string} text — Paragraph's content. Can include HTML tags: <a><b><i>
  */
-interface ParagraphData {
+export interface ParagraphData {
+    /**
+     * Paragraph's content
+     */
     text: string;
 }
+/**
+ * @typedef {object} ParagraphParams
+ * @description Constructor params for the Paragraph tool, use to pass initial data and settings
+ * @property {ParagraphData} data - Preload data for the paragraph.
+ * @property {ParagraphConfig} config - The configuration for the paragraph.
+ * @property {API} api - The Editor.js API.
+ * @property {boolean} readOnly - Is paragraph is read-only.
+ */
 interface ParagraphParams {
+    /**
+     * Initial data for the paragraph
+     */
     data: ParagraphData;
+    /**
+     * Paragraph tool configuration
+     */
     config: ParagraphConfig;
+    /**
+     * Editor.js API
+     */
     api: API;
+    /**
+     * Is paragraph read-only.
+     */
     readOnly: boolean;
 }
 export default class Paragraph {
@@ -45,12 +68,33 @@ export default class Paragraph {
      * @class
      */
     static get DEFAULT_PLACEHOLDER(): string;
+    /**
+     * The Editor.js API
+     */
     api: API;
+    /**
+     * Is Paragraph Tool read-only
+     */
     readOnly: boolean;
+    /**
+     * Paragraph Tool's CSS classes
+     */
     private _CSS;
+    /**
+     * Placeholder for Paragraph Tool
+     */
     private _placeholder;
+    /**
+     * Paragraph's data
+     */
     private _data;
+    /**
+     * Paragraph's main Element
+     */
     private _element;
+    /**
+     * Whether or not to keep blank paragraphs when saving editor data
+     */
     private _preserveBlank;
     /**
      * Render plugin`s main Element and fill it with saved data
@@ -115,19 +159,14 @@ export default class Paragraph {
     onPaste(event: HTMLPasteEvent): void;
     /**
      * Enable Conversion Toolbar. Paragraph can be converted to/from other tools
+     * @returns {ConversionConfig}
      */
-    static get conversionConfig(): {
-        export: string;
-        import: string;
-    };
+    static get conversionConfig(): ConversionConfig;
     /**
      * Sanitizer rules
+     * @returns {SanitizerConfig} - Edtior.js sanitizer config
      */
-    static get sanitize(): {
-        text: {
-            br: boolean;
-        };
-    };
+    static get sanitize(): SanitizerConfig;
     /**
      * Returns true to notify the core that read-only mode is supported
      *
@@ -138,17 +177,14 @@ export default class Paragraph {
      * Used by Editor paste handling API.
      * Provides configuration to handle P tags.
      *
-     * @returns {PasteConfig}
+     * @returns {PasteConfig} - Paragraph Paste Setting
      */
     static get pasteConfig(): PasteConfig;
     /**
      * Icon and title for displaying at the Toolbox
      *
-     * @returns {{icon: string, title: string}}
+     * @returns {ToolboxConfig} - Paragraph Toolbox Setting
      */
-    static get toolbox(): {
-        icon: string;
-        title: string;
-    };
+    static get toolbox(): ToolboxConfig;
 }
 export {};
