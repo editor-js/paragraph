@@ -212,7 +212,7 @@ export default class Paragraph {
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
     div.contentEditable = 'false';
-    div.dataset.placeholder = this.api.i18n.t(this._placeholder);
+    div.dataset.placeholderActive = this.api.i18n.t(this._placeholder);
 
     if (this._data.text) {
       div.innerHTML = this._data.text;
