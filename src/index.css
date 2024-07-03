@@ -4,10 +4,10 @@
 }
 
 /**
- * Normally paragraph placeholder is shown only for the current block (thanks to "data-placeholder-active").
+ * Normally paragraph placeholder is shown only for the focused block (thanks to "data-placeholder-active").
  *
  * But there is a special case when the paragraph is the only block in the empty editor.
- * When editor autofocus=false, there be no current block. We need to show the placeholder anyway.
+ * When editor autofocus=false, there will be no focus. We need to show the placeholder anyway.
  */
 .ce-block:only-of-type .ce-paragraph[data-placeholder-active]:empty::before,
 .ce-block:only-of-type .ce-paragraph[data-placeholder-active][data-empty="true"]::before {
