@@ -18,10 +18,10 @@
   "exports": {
     ".": {
       "import": "./dist/paragraph.mjs",
-      "require": "./dist/paragraph.umd.js"
+      "require": "./dist/paragraph.umd.js",
+      "types": "./dist/index.d.ts"
     }
   },
-  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
