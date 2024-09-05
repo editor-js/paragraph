@@ -39,6 +39,6 @@
     "vite-plugin-dts": "^3.9.1"
   },
   "dependencies": {
-    "@codexteam/icons": "^0.0.4"
+    "@codexteam/icons": "^0.3.0"
   }
 }

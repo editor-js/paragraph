@@ -2,6 +2,18 @@
     line-height: 1.6em;
     outline: none;
 }
+.ce-paragraph--right {
+    text-align: right;
+}
+.ce-paragraph--center {
+    text-align: center;
+}
+.ce-paragraph--left {
+    text-align: left;
+}
+.ce-paragraph--justify {
+    text-align: justify;
+}
 
 /**
  * Normally paragraph placeholder is shown only for the focused block (thanks to "data-placeholder-active").
