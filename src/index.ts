@@ -6,7 +6,7 @@ import './index.css';
 import { IconText } from '@codexteam/icons';
 import makeFragment from './utils/makeFragment';
 
-import { IconAlignLeft, IconAlignCenter, IconAlignRight } from '@codexteam/icons';
+import { IconAlignLeft, IconAlignCenter, IconAlignRight, IconAlignJustify } from '@codexteam/icons';
 
 import type {
   API,
@@ -94,6 +94,7 @@ interface ParagraphAlignments {
   left: string;
   center: string;
   right: string;
+  justify: string;
 }
 
 /**
@@ -118,7 +119,7 @@ interface ParagraphCSS {
 }
 
 enum ParagraphAlignmentsEnum {
-  LEFT = 'left', CENTER = 'center', RIGHT = 'right'
+  LEFT = 'left', CENTER = 'center', RIGHT = 'right', JUSTIFY = 'justify'
 }
 
 export default class Paragraph {
@@ -143,6 +144,7 @@ export default class Paragraph {
       left: ParagraphAlignmentsEnum.LEFT.toString(),
       center: ParagraphAlignmentsEnum.CENTER.toString(),
       right: ParagraphAlignmentsEnum.RIGHT.toString(),
+      justify: ParagraphAlignmentsEnum.JUSTIFY.toString(),
     };
   }
 
@@ -222,6 +224,7 @@ export default class Paragraph {
         left: 'ce-paragraph--left',
         center: 'ce-paragraph--center',
         right: 'ce-paragraph--right',
+        justify: 'ce-paragraph--justify',
       }
     };
 
@@ -554,6 +557,12 @@ export default class Paragraph {
         name: 'right',
         icon: IconAlignRight,
         title: 'Align right',
+        toggle: true,
+      },
+      {
+        name: 'justify',
+        icon: IconAlignJustify,
+        title: 'Justify',
         toggle: true,
       },
     ];

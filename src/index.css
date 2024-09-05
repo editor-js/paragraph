@@ -11,6 +11,9 @@
 .ce-paragraph--left {
     text-align: left;
 }
+.ce-paragraph--justify {
+    text-align: justify;
+}
 
 /**
  * Normally paragraph placeholder is shown only for the focused block (thanks to "data-placeholder-active").
