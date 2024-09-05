@@ -1,5 +1,5 @@
 {
-  "name": "@editorjs/paragraph",
+  "name": "@blade47/editorjs-paragraph",
   "version": "2.11.6",
   "keywords": [
     "codex editor",
@@ -39,6 +39,6 @@
     "vite-plugin-dts": "^3.9.1"
   },
   "dependencies": {
-    "@codexteam/icons": "^0.0.4"
+    "@codexteam/icons": "^0.3.0"
   }
 }

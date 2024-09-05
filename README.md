@@ -50,19 +50,21 @@ The Paragraph Tool supports these configuration parameters:
 | ----- | -------- | ------------------ |
 | placeholder | `string` | The placeholder. Will be shown only in the first paragraph when the whole editor is empty.  |
 | preserveBlank | `boolean` | (default: `false`) Whether or not to keep blank paragraphs when saving editor data |
+| defaultAlignment | `left|center|right` | (default: `left`) Where should be aligned the by default the paragraph text |
 
 ## Output data
 
-| Field  | Type     | Description      |
-| ------ | -------- | ---------------- |
-| text   | `string` | paragraph's text |
-
+| Field     | Type                | Description           |
+| ------    | --------            | ----------------      |
+| text      | `string`            | paragraph's text      |
+| alignment | `left|center|right` | paragraph's alignment |
 
 ```json
 {
     "type" : "paragraph",
     "data" : {
         "text" : "Check out our projects on a <a href=\"https://github.com/codex-team\">GitHub page</a>.",
+        "alignment": "left"
     }
 }
 ```
