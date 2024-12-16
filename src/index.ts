@@ -185,7 +185,7 @@ export default class Paragraph {
    *
    * @param {KeyboardEvent} e - key up event
    */
-  onKeyUp(e: KeyboardEvent): void {
+  private onKeyUp(e: KeyboardEvent): void {
     if (e.code !== 'Backspace' && e.code !== 'Delete') {
       return;
     }
@@ -292,6 +292,15 @@ export default class Paragraph {
     return {
       text: toolsContent.innerHTML,
     };
+  }
+
+  /**
+   * Method that is being called when the element is being destroyed
+   *
+   * @public
+   */
+  public destroy(): void {
+    this._element?.removeEventListener('keyup', this.onKeyUp)
   }
 
   /**

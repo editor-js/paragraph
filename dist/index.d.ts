@@ -1,5 +1,4 @@
 import { API, ConversionConfig, HTMLPasteEvent, PasteConfig, SanitizerConfig, ToolConfig, ToolboxConfig } from '@editorjs/editorjs';
-
 /**
  * Base Paragraph Block for the Editor.js.
  * Represents a regular text block
@@ -112,7 +111,7 @@ export default class Paragraph {
      *
      * @param {KeyboardEvent} e - key up event
      */
-    onKeyUp(e: KeyboardEvent): void;
+    private onKeyUp;
     /**
      * Create Tool's view
      *
@@ -151,6 +150,12 @@ export default class Paragraph {
      * @public
      */
     save(toolsContent: HTMLDivElement): ParagraphData;
+    /**
+     * Method that is being called when the element is being destroyed
+     *
+     * @public
+     */
+    destroy(): void;
     /**
      * On paste callback fired from Editor.
      *
