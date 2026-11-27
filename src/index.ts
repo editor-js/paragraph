@@ -298,22 +298,26 @@ export default class Paragraph {
    * On paste callback fired from Editor.
    *
    * @param {HTMLPasteEvent} event - event with pasted data
+   * @returns {Promise<void>} resolves when the pasted content is rendered
    */
-  onPaste(event: HTMLPasteEvent): void {
+  onPaste(event: HTMLPasteEvent): Promise<void> {
     const data = {
       text: event.detail.data.innerHTML,
     };
 
     this._data = data;
 
-    /**
-     * We use requestAnimationFrame for performance purposes
-     */
-    window.requestAnimationFrame(() => {
-      if (!this._element) {
-        return;
-      }
-      this._element.innerHTML = this._data.text || '';
+    return new Promise((resolve) => {
+      /**
+       * We use requestAnimationFrame for performance purposes
+       */
+      window.requestAnimationFrame(() => {
+        if (this._element) {
+          this._element.innerHTML = this._data.text || '';
+        }
+
+        resolve();
+      });
     });
   }
 
